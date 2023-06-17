@@ -1,0 +1,30 @@
+./
+├── .gitignore
+├── README.md
+├── file_structure.txt
+├── next-env.d.ts
+├── next.config.js
+├── package-lock.json
+├── package.json
+├── postcss.config.js
+├── src/
+│   ├── components/
+│   │   └── Header.tsx
+    │   ├── pages/
+    │   │   ├── _app.tsx
+    │   │   ├── events/
+    │   │   │   └── page.tsx
+    │   │   ├── index.tsx
+    │   │   ├── organizations/
+    │   │   │   └── page.tsx
+    │   │   └── users/
+    │   │       └── page.tsx
+│   ├── public/
+│   │   ├── next.svg
+│   │   └── vercel.svg
+│   └── styles/
+│       └── _global.css
+├── tailwind.config.js
+└── tsconfig.json
+
+9 directories, 19 files
