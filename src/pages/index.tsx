@@ -1,4 +1,4 @@
-    import Header from '@/components/Header';
+    import Header from '@/components/Navigations/Header';
     import React from 'react';
     // css from tailwind
 

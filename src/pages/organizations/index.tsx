@@ -1,4 +1,4 @@
-import Paginator from '@/components/Paginator';
+import Paginator from '@/components/Paginators/Paginator';
 import React, { useState } from 'react';
 
 interface Organizations {
@@ -124,7 +124,7 @@ const OrganizationsPage = () => {
                 <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
                     <thead className="bg-gray-50">
                         <tr className="border-b border-gray-200 text-center">
-                            {Object.keys(organizations[0]).map((key) => {
+                            {organizations.length > 0 && organizations[0] && Object.keys(organizations[0]).map((key) => {
                                 if (key !== 'email') {
                                     return (
                                         <th

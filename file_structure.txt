@@ -1,5 +1,11 @@
 ./
 ├── .gitignore
+├── .idea/
+│   ├── .gitignore
+│   ├── modules.xml
+│   ├── next-deflab-office.iml
+│   ├── vcs.xml
+│   └── workspace.xml
 ├── README.md
 ├── file_structure.txt
 ├── next-env.d.ts
@@ -9,22 +15,37 @@
 ├── postcss.config.js
 ├── src/
 │   ├── components/
-│   │   └── Header.tsx
-    │   ├── pages/
-    │   │   ├── _app.tsx
-    │   │   ├── events/
-    │   │   │   └── page.tsx
-    │   │   ├── index.tsx
-    │   │   ├── organizations/
-    │   │   │   └── page.tsx
-    │   │   └── users/
-    │   │       └── page.tsx
+│   │   ├── Dropdowns/
+│   │   │   └── DropdownMenu.tsx
+│   │   ├── Forms/
+│   │   │   └── ChangeUsername.tsx
+│   │   ├── Navigations/
+│   │   │   └── Header.tsx
+│   │   ├── Paginators/
+│   │   │   └── Paginator.tsx
+│   │   └── Sidebars/
+│   │       └── sidebar.tsx
+│   ├── pages/
+│   │   ├── _app.tsx
+│   │   ├── account/
+│   │   │   ├── index.tsx
+│   │   │   └── settings/
+│   │   │       └── index.tsx
+│   │   ├── events/
+│   │   │   └── index.tsx
+│   │   ├── index.tsx
+│   │   ├── organizations/
+│   │   │   └── index.tsx
+│   │   └── users/
+│   │       └── page.tsx
 │   ├── public/
 │   │   ├── next.svg
 │   │   └── vercel.svg
-│   └── styles/
-│       └── _global.css
+│   ├── styles/
+│   │   └── _global.css
+│   └── types/
+│       └── Color.ts
 ├── tailwind.config.js
 └── tsconfig.json
 
-9 directories, 19 files
+18 directories, 31 files
