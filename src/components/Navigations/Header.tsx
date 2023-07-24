@@ -14,6 +14,7 @@ const Header = () => {
 
     // @ts-ignore
     const optionList: DropdownOption[] = [
+            // @ts-ignore
         {
             text: 'Profile',
             // @ts-ignore
@@ -21,12 +22,14 @@ const Header = () => {
             color: "#3B82F6",
             action: () => console.log('Profile'),
         },
+            // @ts-ignore
         {
             text: 'Settings',
             Icon: CogIcon,
             color: "#10B981",
             action: handleSettingsClick,
         },
+            // @ts-ignore
         {
             text: 'Sign out',
             Icon: XIcon,
@@ -125,6 +128,15 @@ const Header = () => {
                                     id="users-link" // ID pour le lien des utilisateurs
                                 >
                                     Users
+                                </a>
+                                <a
+                                    href="/tags"
+                                    className={`${
+                                        router.pathname === '/tags' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                    } px-3 py-2 rounded-md text-sm font-medium`}
+                                    id="tags-link" // ID pour le lien des utilisateurs
+                                >
+                                    Tags
                                 </a>
                             </div>
                         </div>
