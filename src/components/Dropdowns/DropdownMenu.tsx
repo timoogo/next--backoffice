@@ -10,6 +10,7 @@ interface DropdownProps {
   orientation?: 'vertical' | 'horizontal';
   title?: string;
   withIcons?: boolean;
+  // @ts-ignore
   action: typeof Link | (() => void) | null;
 }
 
