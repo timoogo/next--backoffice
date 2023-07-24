@@ -9,11 +9,9 @@ import DropdownMenu from '@/components/Dropdowns/DropdownMenu';
 
 
 
-export const getStaticProps = async () => {
-    const res = await fetch(API_ROUTES.USERS);
+export const getServerSideProps = async () => {
+    const res = await fetch('http://localhost:3001/api/users');
     const users = await res.json();
-    console.log (users);
-
     return {
         props: {
             users
@@ -133,7 +131,7 @@ const UsersPage = ({ users }: UsersPageProps) => {
         </td>
         {/* Actions (Edit & Delete) */}
         <td className="px-6 py-4 align-middle text-center">
-          <DropdownMenu options={options} />
+          <DropdownMenu options={options}  action={null}/>
         </td>
       </tr>
     ))}
