@@ -34,3 +34,12 @@ type Event = {
     createdAt: string;
     updatedAt: string;
 }
+
+type Tag = {
+    id: number;
+    tagName: string;
+    tagCategory: string;
+    tagType: string;
+    tagColor?: string;
+    events?: Event[];
+}

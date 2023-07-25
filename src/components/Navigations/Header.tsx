@@ -146,7 +146,6 @@ const Header = () => {
                             orientation={"horizontal"}
                             withIcons={true}
                             options={optionList}
-                            action={() => console.log('DropdownMenu')}
                         />
 
                     </div>

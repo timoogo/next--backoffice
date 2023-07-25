@@ -114,7 +114,7 @@ const TagsPage = ({ tags }: TagsPageProps) => {
 
                   {/* Actions (Edit & Delete) */}
                   <td className="px-6 py-4 align-middle text-center">
-                    <DropdownMenu options={options} action={null} />
+                    <DropdownMenu options={options} />
                   </td>
                 </tr>
               ))}

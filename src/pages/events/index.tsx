@@ -47,31 +47,7 @@ const EventsPage = ({ events }: EventsPageProps) => {
     currentPage * itemsPerPage
   );
 
-  // @ts-ignore
-  const options: DropdownOption[] = [
-    {
-      text: "Edit",
-      // @ts-ignore
-      Icon: PencilAltIcon,
-      color: "#3B82F6",
-      action: () => console.log("Edit"),
-    },
-    {
-      text: "Delete",
-      Icon: XCircleIcon,
-      color: "#10B981",
-      // /DELETE /api/events/:id
-// /DELETE /api/events/:id
-action: async (id: number) => {
-  const res = await fetch(`/api/events/${id}`, {
-    method: "DELETE",
-  });
-  if (res.ok) {
-    console.log("Event deleted");
-
-  }
-},    },
-  ];
+ 
 
   const totalPages = Math.ceil(events.length / itemsPerPage);
 
@@ -151,7 +127,11 @@ function handleDate(date: string) {
  
         {/* Actions (Edit & Delete) */}
         <td className="px-6 py-4 align-middle text-center">
-          <DropdownMenu options={options}  action={null}/>
+          <button className="text-indigo-600 hover:text-indigo-900">
+            <Link href={`/events/${event.id}`}>
+                <PencilAltIcon className="w-5 h-5" />
+            </Link>
+          </button>
         </td>
       </tr>
     ))}

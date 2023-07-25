@@ -1,6 +1,6 @@
-import { API_ROUTES } from "@/constants/api.routes.constants";
 import { NextResponse } from "next/server";
 import { Event } from "../../../../types";
+import { API_ROUTES } from "@/constants/api.routes.constants";
 
 const DATA_SOURCE_URL = API_ROUTES.USERS
 

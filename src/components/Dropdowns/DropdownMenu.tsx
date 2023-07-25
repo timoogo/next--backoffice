@@ -10,8 +10,6 @@ interface DropdownProps {
   orientation?: 'vertical' | 'horizontal';
   title?: string;
   withIcons?: boolean;
-  // @ts-ignore
-  action: typeof Link | (() => void) | null;
 }
 
 let openDropdownIds: string[] = [];
@@ -22,7 +20,6 @@ const DropdownMenu: React.FC<DropdownProps> = ({
   description,
   withIcons = false,
   options,
-  action,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownId = Math.random().toString(36).substring(7);
@@ -44,18 +41,34 @@ const DropdownMenu: React.FC<DropdownProps> = ({
 
   const Icon = orientation === 'vertical' ? DotsVerticalIcon : DotsHorizontalIcon;
 
-  const handleOptionClick = (action: typeof Link | (() => void) | null) => {
+  const handleOptionClick = (option: DropdownOption) => {
     toggleDropdown();
-    if (action) {
-      if (action === Link) {
-        // @ts-ignore
-        action.push(action.href, action.as || '', { shallow: true });
+    if (typeof option.action === 'function') {
+      option.action();
+    } else if (option.action) {
+      if (option.action === Link) {
+        window.location.href = option.action || '';
       } else {
-        // @ts-ignore
-        action();
+        // handle other types of actions
       }
     }
-    
+    if (option.method && option.endpoint && option.targetId) {
+      fetch(`http://localhost:3001/api/${option.endpoint}/${option.targetId}`, {
+        method: option.method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          id: option.targetId,
+         }),
+      })
+        .then((response) => {
+          // handle response
+        })
+        .catch((error) => {
+          // handle error
+        });
+    }
   };
 
   return (
@@ -90,7 +103,7 @@ const DropdownMenu: React.FC<DropdownProps> = ({
             {options.map((option, index) => (
               <button
                 key={index}
-                onClick={() => handleOptionClick(option.action)}
+                onClick={() => handleOptionClick(option)}
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
               >
                 {withIcons && (

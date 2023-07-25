@@ -7,5 +7,8 @@ export type DropdownOption = {
     Icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
     //@ts-ignore
     color: Color;
-    action: () => void;
+    method?: 'GET | POST | PUT | DELETE',
+    endpoint?: string;
+    action?: () => void;
+    targetId?: number
 };
