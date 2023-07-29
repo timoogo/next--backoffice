@@ -12,7 +12,10 @@ interface StatData {
 
 const IndexPage = ({ statData }: { statData: StatData }) => {
   return (
-    <div>
+<div className="bg-gray-200 p-4 min-h-screen">
+  <div className="flex flex-col py-2">
+    <h1 className="text-6xl py-2 ">Dashboard</h1>
+    <div className="flex flex-row flex-wrap">
       <StatCard
         title="Total Users"
         value={`${statData.totalUsers}`}
@@ -37,8 +40,11 @@ const IndexPage = ({ statData }: { statData: StatData }) => {
         description="Total Organizations"
         icon={<FaBuilding />}
       />
-      {/* Add more StatCard components for other statistics */}
+      {/* Ajoutez plus de composants StatCard pour d'autres statistiques */}
     </div>
+  </div>
+</div>
+
   );
 };
 

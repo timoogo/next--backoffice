@@ -24,7 +24,7 @@ export async function DELETE(request: Request) {
  }
     }
 )
-    return NextResponse.json({ message: `Event ${id} deleted` }, { status: 200 })
+    return NextResponse.json({ message: `Tag ${id} deleted` }, { status: 200 })
 }
 
 export async function POST(request: Request) {
@@ -41,6 +41,6 @@ export async function POST(request: Request) {
     }
     }
     )
-    return NextResponse.json({ message: `Event ${id} created` }, { status: 200 })
+    return NextResponse.json({ message: `Tag ${id} created` }, { status: 200 })
 }
 

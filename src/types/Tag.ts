@@ -4,3 +4,12 @@ export interface Tag {
     tagCategory: string;
     tagType: string;
   }
+
+ export type TagFormData = {
+    id: string;
+    tagCategory: string;
+    tagName: string;
+    tagType: string;
+    tagColor?: string;
+  };
+  

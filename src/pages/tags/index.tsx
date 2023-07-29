@@ -19,9 +19,10 @@ export const getServerSideProps = async () => {
 
 interface Tag {
   id: number;
-  name: string;
+  tagName: string;
   tagCategory: string;
   tagType: string;
+  tagColor?: string;
 }
 
 interface TagsPageProps {
@@ -62,13 +63,19 @@ const TagsPage = ({ tags }: TagsPageProps) => {
     setCurrentPage(1);
   };
 
-  function handlePhoneDisplay(phoneNumber: string): string {
-    const parsedPhoneNumber = parsePhoneNumberFromString(phoneNumber, 'FR');
-    if (parsedPhoneNumber) {
-      return parsedPhoneNumber.formatInternational();
-    }
-    return phoneNumber;
+  function getContrastingTextColor(tagColor: string): string {
+    // Extrait les composantes R, G, B de la couleur
+    const r = parseInt(tagColor.substr(1, 2), 16);
+    const g = parseInt(tagColor.substr(3, 2), 16);
+    const b = parseInt(tagColor.substr(5, 2), 16);
+  
+    // Calcule la luminosité
+    const luminosity = (0.299 * r + 0.587 * g + 0.114 * b);
+  
+    // Renvoie la classe Tailwind pour noir ou blanc en fonction de la luminosité
+    return luminosity > 128 ? 'text-black' : 'text-white';
   }
+
 
   const indexOfLasttag = currentPage * itemsPerPage;
   const indexOfFirsttag = indexOfLasttag - itemsPerPage;
@@ -104,12 +111,18 @@ const TagsPage = ({ tags }: TagsPageProps) => {
               {currenttags.map((tag) => (
                 <tr key={tag.id} className="hover:bg-gray-100">
                   <td className="px-6 py-4 text-center align-middle">{tag.id}</td>
-                  <td className="px-6 py-4  text-center align-middle">{tag.name}</td>
+                  <td className="px-6 py-4  text-center align-middle">{tag.tagName}</td>
+                  <td className="px-6 py-4 text-center align-middle"> {tag.tagType} </td>
                   <td className="px-6 py-4 text-center align-middle"> {tag.tagCategory} </td>
                   <td className="px-6 py-4 text-center align-middle">
-                    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${tag.tagCategory ? 'bg-green-200' : 'bg-red-200'}`}>
-                      {tag.tagType ? 'offline' : 'online'}
-                    </span>
+                 {tag.tagColor && (
+                   <span
+                   className={`inline-flex px-2 text-xs font-semibold leading-5 rounded-full ${getContrastingTextColor(tag.tagColor)}`}
+                   style={{ backgroundColor: tag.tagColor }}
+                 >
+                   {tag.tagColor}
+                 </span>
+                  )}
                   </td>
 
                   {/* Actions (Edit & Delete) */}
