@@ -15,11 +15,17 @@ interface TagPageProps {
 
 const TagPage: React.FC<TagPageProps> = ({ tag }) => {
   return (
-    <div>
-      <h1>{tag.tagName}</h1>
-      <p>{tag.tagCategory}</p>
-      <p>{tag.tagType}</p>
-     {tag.tagColor && <p>{tag.tagColor}</p>}
+    <div className="container mx-auto my-8">
+      <div className="p-4 bg-white shadow-md rounded-lg">
+        <h1 className="text-2xl font-semibold mb-2">{tag.tagName}</h1>
+        <p className="text-gray-600 mb-4">{tag.tagCategory}</p>
+        <p className="text-gray-600 mb-4">{tag.tagType}</p>
+        {tag.tagColor && (
+          <p className="text-gray-600 mb-4">
+            <strong>Color:</strong> {tag.tagColor}
+          </p>
+        )}
+      </div>
     </div>
   );
 };

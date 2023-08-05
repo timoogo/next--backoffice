@@ -1,67 +1,36 @@
-import DropdownMenu from "@/components/Dropdowns/DropdownMenu";
-import Paginator from "@/components/Paginators/Paginator";
-import { DropdownOption } from "@/types/Options";
-import { PencilAltIcon, XCircleIcon } from "@heroicons/react/solid";
-import { useState } from "react";
+import React, { useState } from 'react';
+import { useQuery } from 'react-query';
+import { API_ROUTES } from '@/constants/api.routes.constants';
 
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import DropdownMenu from '@/components/Dropdowns/DropdownMenu';
+import Link from 'next/link';
 
+import { Organization } from '../../../types';
+import { DotsCircleHorizontalIcon, PencilAltIcon, XCircleIcon } from '@heroicons/react/solid';
+import { DropdownOption } from '@/types/Options';
+import Paginator from '@/components/Paginators/Paginator';
 
 export const getServerSideProps = async () => {
   const res = await fetch('http://localhost:3001/api/organizations');
   const organizations = await res.json();
-
-
-  console.log(organizations);
   return {
     props: {
-      organizations
-    }
+      organizations,
+    },
   };
-}
-
-
+};
 
 interface OrganizationsPageProps {
   organizations: Organization[];
 }
 
-interface Organization {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  description: string;
-  image: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 const OrganizationsPage = ({ organizations }: OrganizationsPageProps) => {
+
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Check if organizations is an array and not empty before calling slice
-  const currentOrganizations = Array.isArray(organizations) && organizations.length > 0
-    ? organizations.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-    : [];
-  
-  const options: DropdownOption[] = [
-    // @ts-ignore
-    {
-      text: 'Edit',
-      Icon: PencilAltIcon,
-      color: "#3B82F6",
-      action: () => console.log('Edit'),
-    },
-    {
-      text: 'Delete',
-      Icon: XCircleIcon,
-      color: "#10B981",
-      action: () => console.log('Delete'),
-    }
-  ];
-
-  const totalPages = Array.isArray(organizations) ? Math.ceil(organizations.length / itemsPerPage) : 0;
+  const totalPages = Math.ceil(organizations.length / itemsPerPage);
 
   const handlePageChange = (pageNumber: number) => {
     if (pageNumber < 1 || pageNumber > totalPages) {
@@ -74,61 +43,120 @@ const OrganizationsPage = ({ organizations }: OrganizationsPageProps) => {
     setItemsPerPage(newItemsPerPage);
     setCurrentPage(1);
   };
+  const indexOfLastOrganization = currentPage * itemsPerPage;
+  const indexOfFirstOrganization = indexOfLastOrganization - itemsPerPage;
+  const currentOrganizations = organizations.slice(
+    indexOfFirstOrganization,
+    indexOfLastOrganization,
+  );
+  const transformPhone = (phone: string) => {
+    // +33 6 12 34 56 78
+    const phoneNumber = parsePhoneNumberFromString(phone, 'FR');
+    if (phoneNumber) {
+      return phoneNumber.formatInternational();
+    }
+    return phone;
 
+  }
 
+  function handleDate(date: string) {
+    // french date format : dd/mm/yyyy
+    const day = date.slice(8, 10);
+    const month = date.slice(5, 7);
+    const year = date.slice(0, 4);
+    return `${day}/${month}/${year}`;
+  }
 
-  const handleTimeStamps = (timestamp: string) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString();
-  };
+  function handleTime(time: number) {
+    // Divise le temps en heures et minutes
+    const hours = Math.floor(time / 60);
+    const minutes = time % 60;
+
+    // Formate les heures et les minutes avec un zéro devant si nécessaire
+    const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+
+    // Retourne le temps formaté
+    return `${formattedHours}:${formattedMinutes}`;
+  }
 
   return (
     <>
+    <div className="flex justify-end">
+      <Link
+        href="/organizations/post"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Créer un organization
+      </Link>
+    </div>
+    {organizations.length === 0 ? (
+      <div className="flex justify-center mt-5">
+        <p className="text-gray-500 text-lg">No organizations found.</p>
+      </div>
+    ) : (
       <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
-        {organizations.length > 0 ? (
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr className="border-b border-gray-200 text-center">
-                {organizations[0] && Object.keys(organizations[0]).map((key) => {
-                  if (key !== 'password') { // Exclude password for security reasons
-                    return (
-                      <th
-                        className="px-6 py-4 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle"
-                        key={key}
-                      >
-                        {key}
-                      </th>
-                    );
-                  }
-                  return null;
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr className="border-b border-gray-200 text-center">
+              {organizations.length > 0 &&
+                organizations[0] &&
+                Object.keys(organizations[0]).map((key) => {
+                  // Hide the "image" field from the table headers
+                  if (key === 'image') return null;
+                  return (
+                    <th
+                      className="px-6 py-4 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle"
+                      key={key}
+                    >
+                      {key}
+                    </th>
+                  );
                 })}
-                <th className="px-6 py-4 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100 border-t border-gray-100">
-              {currentOrganizations.map((organization) => (
-                <tr key={organization.id} className="hover:bg-gray-100">
-                  <td className="px-6 py-4 text-center align-middle">{organization.id}</td>
-                  <td className="px-6 py-4 text-center align-middle">{organization.name}</td>
-                  <td className="px-6 py-4 text-center align-middle">{organization.email}</td>
-                  <td className="px-6 py-4 text-center align-middle">{organization.description}</td>
-                  <td className="px-6 py-4 text-center align-middle">{handleTimeStamps(organization.createdAt)}</td>
+              <th className="px-6 py-4 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100 border-t border-gray-100">
+            {currentOrganizations.map((organization) => (
+              <tr key={organization.id} className="hover:bg-gray-100">
+                {/* id	name	email	phone	description	createdAt	updatedAT */}
+                <td className="px-6 py-4 align-middle text-center">
+                  {organization.id}
+                </td>
+                <td className="px-6 py-4 align-middle text-center">
+                  {organization.name}
+                </td>
+                <td className="px-6 py-4 align-middle text-center">
+                  {organization.email}
+                </td>
 
-                  {/* Actions (Edit & Delete) */}
-                  <td className="px-6 py-4 align-middle text-center">
-                    <DropdownMenu options={options}  />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <div className="flex justify-center mt-5">
-            <p className="text-gray-500 text-lg">No organizations found.</p>
-          </div>
-        )}
+                <td className="px-6 py-4 align-middle text-center">
+                  {transformPhone(organization.phone)}
+                </td>
+                <td className="px-6 py-4 align-middle text-center">
+                  {organization.description}
+                </td>
+                <td className="px-6 py-4 align-middle text-center">
+                  {handleDate(organization.createdAt)}
+                </td>
+                <td className="px-6 py-4 align-middle text-center">
+                  {handleDate(organization.updatedAt)}
+                </td>
+                {/* Actions (Edit & Delete) */}
+                <td className="px-6 py-4 align-middle text-center">
+                {/* buttons delete and see */}
+                <Link href={`/organizations/${organization.id}`}>
+                  <PencilAltIcon className="h-5 w-5 text-blue-500 hover:text-blue-700 cursor-pointer" />
+
+                  </Link>
+               
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
         <div className="flex justify-center mt-4">
           {organizations.length > itemsPerPage && (
             <Paginator
@@ -142,7 +170,8 @@ const OrganizationsPage = ({ organizations }: OrganizationsPageProps) => {
           )}
         </div>
       </div>
-    </>
+    )}
+  </>
   );
 };
 

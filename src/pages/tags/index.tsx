@@ -6,6 +6,7 @@ import Paginator from '@/components/Paginators/Paginator';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { DotsCircleHorizontalIcon, PencilAltIcon, XCircleIcon } from '@heroicons/react/solid';
 import DropdownMenu from '@/components/Dropdowns/DropdownMenu';
+import Link from 'next/link';
 
 export const getServerSideProps = async () => {
   const res = await fetch('http://localhost:3001/api/tags');
@@ -83,6 +84,14 @@ const TagsPage = ({ tags }: TagsPageProps) => {
 
   return (
     <>
+       <div className="flex justify-end">
+        <Link
+          href="/tags/post"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Créer un tag
+        </Link>
+      </div>
       {tags.length === 0 ? (
         <div className='flex justify-center mt-5'>
           <p className="text-gray-500 text-lg" >No tags found.</p>

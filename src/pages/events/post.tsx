@@ -1,112 +1,156 @@
-import { useState } from 'react';
-import { API_ROUTES } from '@/constants/api.routes.constants';
-import { Tag } from '../../../types';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { useRouter } from 'next/router';
 
-interface Option {
-  value: string; // Convertir en chaîne de caractères
-  label: string;
-}
-
-interface TagsPageProps {
-  tags: Tag[];
-}
-
-interface FormData {
+export type EventFormData = {
   name: string;
-  organizerId: number;
-  participantId: number;
-  tags: string[]; // Utiliser le type string[] pour les tags
+  organizer: { id: number };
+  participants: Array<{ id: number }>;
+  tags: { id: number };
   description: string;
   image: string;
   location: string;
   date: string;
   duration: number;
   status: string;
-}
+};
 
-const EventPostPage = ({ tags }: TagsPageProps) => {
-  // State pour les champs du formulaire
-  const [formData, setFormData] = useState<FormData>({
+const EVENT_STATUS = ['En cours', 'Complété', 'Annulé'];
+
+const PostEvent: React.FC = () => {
+  const router = useRouter();
+
+  const [formData, setFormData] = useState<EventFormData>({
     name: '',
-    organizerId: 1,
-    participantId: 1,
-    tags: [], // Utiliser le type string[] pour les tags
+    organizer: { id: 0 },
+    participants: [{ id: 0 }],
+    tags: { id: 0 },
     description: '',
     image: '',
     location: '',
-    date: '2023-07-01',
-    duration: 120,
-    status: 'En cours',
+    date: '',
+    duration: 0,
+    status: ''
   });
 
-  const tagsToOptions = (tags: Tag[]): Option[] => {
-    return tags.map((tag: Tag) => {
-      return {
-        value: tag.id.toString(), // Convertir en chaîne de caractères
-        label: tag.tagName,
-      };
-    });
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+  
+
+  const handleOrganizerChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFormData(prev => ({ ...prev, organizer: { id: parseInt(value) } }));
   };
 
-  const options = tagsToOptions(tags);
+  const handleParticipantChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFormData(prev => ({ ...prev, participants: [{ id: parseInt(value) }] }));
+  };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleTagChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFormData(prev => ({ ...prev, tags: { id: parseInt(value) } }));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    // Envoi des données à l'API
-    fetch('http://localhost:3001/api/events', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Faire quelque chose avec la réponse de l'API si nécessaire
-        console.log('Événement créé avec succès :', data);
-      })
-      .catch((error) => {
-        console.error('Erreur lors de la création de l\'événement :', error);
+    try {
+      const response = await fetch('http://localhost:3001/api/events', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la création de l\'événement');
+      }
+
+      router.push('/');
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.error("Une erreur inattendue s'est produite.");
+      }
+    }
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nom de l'événement :</label>
-          <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+    <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+      <h1 className='ml-16 text-3xl font-bold mb-4'>Créer un événement</h1>
+      <div className="relative py-3 sm:max-w-xl sm:mx-auto">
+        <div className="px-4 py-10 bg-white shadow-lg sm:rounded-lg sm:p-20">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Nom de l'événement:</label>
+              <input type="text" name="name" value={formData.name} onChange={handleChange} required className="mt-1 block w-full" />
+            </div>
+  
+            <div>
+              <label className="block text-sm font-medium text-gray-700">ID de l'organisateur:</label>
+              <input type="number" name="organizerId" onChange={handleOrganizerChange} required className="mt-1 block w-full" />
+            </div>
+  
+            <div>
+              <label className="block text-sm font-medium text-gray-700">ID du participant:</label>
+              <input type="number" name="participantId" onChange={handleParticipantChange} required className="mt-1 block w-full" />
+            </div>
+  
+            <div>
+              <label className="block text-sm font-medium text-gray-700">ID du tag:</label>
+              <input type="number" name="tagId" onChange={handleTagChange} required className="mt-1 block w-full" />
+            </div>
+  
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Description:</label>
+              <textarea name="description" value={formData.description} onChange={handleChange} required className="mt-1 block w-full"></textarea>
+            </div>
+  
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Image:</label>
+              <input type="text" name="image" value={formData.image} onChange={handleChange} required className="mt-1 block w-full" />
+            </div>
+  
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Lieu:</label>
+              <input type="text" name="location" value={formData.location} onChange={handleChange} required className="mt-1 block w-full" />
+            </div>
+  
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Date:</label>
+              <input type="date" name="date" value={formData.date} onChange={handleChange} required className="mt-1 block w-full" />
+            </div>
+  
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Durée (en minutes):</label>
+              <input type="number" name="duration" value={formData.duration} onChange={handleChange} required className="mt-1 block w-full" />
+            </div>
+  
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Statut:</label>
+              <select name="status" value={formData.status} onChange={handleChange} required className="mt-1 block w-full">
+                <option value="">Choisir un statut</option>
+                {EVENT_STATUS.map(status => (
+                  <option key={status} value={status}>{status}</option>
+                ))}
+              </select>
+            </div>
+  
+            <div className="flex justify-end">
+              <button type="submit" className="px-6 py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                Soumettre
+              </button>
+            </div>
+          </form>
         </div>
-
-        {/* Ajoute d'autres champs du formulaire ici */}
-
-        <div>
-          <label>Tags :</label>
-          <select
-            name="tags"
-            multiple
-            value={formData.tags} // Utiliser le type string[] pour les tags
-            onChange={(e) => {
-              const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
-              setFormData({ ...formData, tags: selectedOptions });
-            }}
-            required
-          >
-            {options.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Ajoute d'autres champs du formulaire ici */}
-
-        <button type="submit">Créer l'événement</button>
-      </form>
-    </>
+      </div>
+    </div>
   );
+  
 };
 
-export default EventPostPage;
+export default PostEvent;
