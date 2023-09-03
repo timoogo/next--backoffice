@@ -21,24 +21,32 @@ const IndexPage = ({ statData }: { statData: StatData }) => {
         value={`${statData.totalUsers}`}
         description="Total Users"
         icon={<FaUser />}
+        redirection='/users'
+        accessibilityLabel='Total Users'
       />
       <StatCard
         title="Total Tags"
         value={`${statData.totalTags}`}
         description="Total Tags"
         icon={<FaTags />}
+        redirection='/tags'
+        accessibilityLabel='Total Tags'
       />
       <StatCard
         title="Total Events"
         value={`${statData.totalEvents}`}
         description="Total Events"
         icon={<FaCalendar />}
+        redirection='/events'
+        accessibilityLabel='Total Events'
       />
       <StatCard
         title="Total Organizations"
         value={`${statData.totalOrganizations}`}
         description="Total Organizations"
         icon={<FaBuilding />}
+        redirection='/organizations'
+        accessibilityLabel='Total Organizations'
       />
       {/* Ajoutez plus de composants StatCard pour d'autres statistiques */}
     </div>

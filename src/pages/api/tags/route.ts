@@ -44,3 +44,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: `Tag ${id} created` }, { status: 200 })
 }
 
+export async function PUT(request: Request) {
+    const { id }: Partial<Tag> = await request.json()
+    
+    if (!id) {
+        return NextResponse.json({ message: 'Missing id' }, { status: 400 })
+    }
+
+    await fetch(`${DATA_SOURCE_URL}/${id}`, { method: 'PUT',
+    headers: {
+        'Content-Type': 'application/json',
+        //'API-KEY': API_ROUTES.API_KEY
+    }
+    }
+    )
+    return NextResponse.json({ message: `Tag ${id} updated` }, { status: 200 })
+}
