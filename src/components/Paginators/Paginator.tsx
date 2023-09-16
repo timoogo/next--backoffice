@@ -9,13 +9,13 @@ interface PaginatorProps<T> {
   items: T[];
 }
 
-const Paginator: React.FC<PaginatorProps<any>> = ({
+const Paginator: React.FC<PaginatorProps<unknown>> = ({
   currentPage,
   totalPages,
   itemsPerPage,
   onPageChange,
   onItemsPerPageChange,
-  items,
+  
 }) => {
   const handlePreviousPage = () => {
     if (currentPage > 1) {

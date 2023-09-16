@@ -1,6 +1,6 @@
 import { API_ROUTES } from '@/constants/api.routes.constants';
 import { GetServerSideProps } from 'next';
-
+import Image from 'next/image';
 interface Event {
   id: number;
   name: string;
@@ -47,7 +47,7 @@ const EventPage: React.FC<EventPageProps> = ({ event }) => {
       <p className="text-gray-600">{event.description}</p>
     </div>
     <div className="mb-4">
-      <img src={event.image} alt={event.name} className="w-full rounded-lg" />
+      <Image src={event.image} alt={event.name} className="w-full rounded-lg" />
     </div>
     <div className="grid grid-cols-2 gap-4 mb-4">
       <div>

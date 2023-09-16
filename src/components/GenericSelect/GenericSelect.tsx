@@ -8,19 +8,17 @@ interface Option {
 interface Props<T> {
   name: string;
   options: T[];
- 
 }
 
-const GenericSelect = <T extends Option>({ name, options }: Props<T>) => {
+export const GenericSelect = <T extends Option>({ name, options }: Props<T>) => {
     return (
         <select name={name} id="">
         {options.map((option: T) => {
             return (
-            <option value={option.value}>{option.label}</option>
+            <option key={option.value} value={option.value}>{option.label}</option>
             )
         }
         )}
         </select>
     )
-    }
-export default GenericSelect;
+}

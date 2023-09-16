@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Form from './Form';
 import {FormProp} from "@/types/FormProps";
 
-    const ChangeEmail: React.FC<FormProp> = ({title, description, onChange, value, isEncrypted, onSubmit}) => {
+const ChangeEmail: React.FC<FormProp> = ({title, description, isEncrypted}) => {
     const [email, setUsername] = useState('');
 
     const handleUsernameChange = (value: string) => {

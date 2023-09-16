@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { PencilAltIcon, XCircleIcon } from "@heroicons/react/solid";
-import Paginator from "@/components/Paginators/Paginator";
-import DropdownMenu from "@/components/Dropdowns/DropdownMenu";
-import { DropdownOption } from "@/types/Options";
+import Paginator from "@/components/Paginators/Paginator";;
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import router from "next/router";
 import { User } from "../../../types";
 import Link from "next/link";
-import { FaPen } from "react-icons/fa";
 
 interface UsersPageProps {
   users: User[];
@@ -81,7 +78,7 @@ const UsersPage = ({ users }: UsersPageProps) => {
   // ];
 
   const handleEdit = (userId: number) => {
-    router.push(`/users/edit/${userId}`); // Change the route accordingly
+    router.push(`/users/put/${userId}`); // Change the route accordingly
   };
 
   const handleDelete = async (userId: number) => {
@@ -96,8 +93,12 @@ const UsersPage = ({ users }: UsersPageProps) => {
       } else {
         console.error(`Error deleting user with ID ${userId}.`);
       }
-    } catch (error: any) {
-      console.error(`Error deleting user with ID ${userId}: ${error.message}`);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(`Error deleting user with ID ${userId}: ${error.message}`);
+      } else {
+        console.error(`An unexpected error occurred.`);
+      }
     }
   };
 

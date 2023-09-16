@@ -1,5 +1,4 @@
 import {Color} from "@/types/Color";
-import Link from "next/link";
 import {SVGProps} from "react";
 
 export type DropdownOption = {

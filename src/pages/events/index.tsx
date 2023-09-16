@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { PencilAltIcon, XCircleIcon } from '@heroicons/react/solid';
-import DropdownMenu from '@/components/Dropdowns/DropdownMenu';
+import { PencilAltIcon } from '@heroicons/react/solid';
 import Paginator from '@/components/Paginators/Paginator';
 import Link from 'next/link';
-import { log } from 'console';
+
 
 export const getServerSideProps = async () => {
   const res = await fetch('http://localhost:3001/api/events');

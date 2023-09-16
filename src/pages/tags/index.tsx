@@ -40,8 +40,12 @@ const TagsPage = ({ tags }: TagsPageProps) => {
       } else {
         console.error(`Error deleting tag with ID ${tagId}.`);
       }
-    } catch (error: any) {
-      console.error(`Error deleting tag with ID ${tagId}: ${error.message}`);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+          console.error(`Error deleting tag with ID ${tagId}: ${error.message}`);
+      } else {
+          console.error(`An unexpected error occurred.`);
+      }
     }
   };
 

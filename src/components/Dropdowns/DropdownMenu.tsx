@@ -1,8 +1,8 @@
 import { DotsVerticalIcon, DotsHorizontalIcon } from '@heroicons/react/solid';
-import { Color } from '@/types/Color';
 import { DropdownOption } from '@/types/Options';
 import { useState } from 'react';
 import Link from 'next/link';
+
 
 interface DropdownProps {
   description?: string;
@@ -63,10 +63,10 @@ const DropdownMenu: React.FC<DropdownProps> = ({
          }),
       })
         .then((response) => {
-          // handle response
+          console.log(response);
         })
         .catch((error) => {
-          // handle error
+          console.error(error);
         });
     }
   };

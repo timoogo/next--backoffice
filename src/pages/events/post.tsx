@@ -1,5 +1,5 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { useRouter } from 'next/router';
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useRouter } from "next/router";
 
 export type EventFormData = {
   name: string;
@@ -14,22 +14,22 @@ export type EventFormData = {
   status: string;
 };
 
-const EVENT_STATUS = ['En cours', 'Complété', 'Annulé'];
+const EVENT_STATUS = ["En cours", "Complété", "Annulé"];
 
 const PostEvent: React.FC = () => {
   const router = useRouter();
 
   const [formData, setFormData] = useState<EventFormData>({
-    name: '',
+    name: "",
     organizer: { id: 0 },
     participants: [{ id: 0 }],
     tags: { id: 0 },
-    description: '',
-    image: '',
-    location: '',
-    date: '',
+    description: "",
+    image: "",
+    location: "",
+    date: "",
     duration: 0,
-    status: ''
+    status: ""
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -57,19 +57,19 @@ const PostEvent: React.FC = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3001/api/events', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3001/api/events", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': "application/json",
         },
         body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la création de l\'événement');
+        throw new Error("Erreur lors de la création de l\'événement");
       }
 
-      router.push('/');
+      router.push("/");
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -81,17 +81,17 @@ const PostEvent: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-      <h1 className='ml-16 text-3xl font-bold mb-4'>Créer un événement</h1>
+      <h1 className="ml-16 text-3xl font-bold mb-4">Créer un événement</h1>
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
         <div className="px-4 py-10 bg-white shadow-lg sm:rounded-lg sm:p-20">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Nom de l'événement:</label>
+              <label className="block text-sm font-medium text-gray-700">Nom de l\'événement:</label>
               <input type="text" name="name" value={formData.name} onChange={handleChange} required className="mt-1 block w-full" />
             </div>
   
             <div>
-              <label className="block text-sm font-medium text-gray-700">ID de l'organisateur:</label>
+              <label className="block text-sm font-medium text-gray-700">ID de l\'organisateur:</label>
               <input type="number" name="organizerId" onChange={handleOrganizerChange} required className="mt-1 block w-full" />
             </div>
   

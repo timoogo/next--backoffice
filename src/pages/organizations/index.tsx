@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query';
-import { API_ROUTES } from '@/constants/api.routes.constants';
-
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
-import DropdownMenu from '@/components/Dropdowns/DropdownMenu';
 import Link from 'next/link';
 
 import { Organization } from '../../../types';
-import { DotsCircleHorizontalIcon, PencilAltIcon, XCircleIcon } from '@heroicons/react/solid';
-import { DropdownOption } from '@/types/Options';
+import { PencilAltIcon } from '@heroicons/react/solid';
 import Paginator from '@/components/Paginators/Paginator';
 
 export const getServerSideProps = async () => {
@@ -67,18 +62,6 @@ const OrganizationsPage = ({ organizations }: OrganizationsPageProps) => {
     return `${day}/${month}/${year}`;
   }
 
-  function handleTime(time: number) {
-    // Divise le temps en heures et minutes
-    const hours = Math.floor(time / 60);
-    const minutes = time % 60;
-
-    // Formate les heures et les minutes avec un zéro devant si nécessaire
-    const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-
-    // Retourne le temps formaté
-    return `${formattedHours}:${formattedMinutes}`;
-  }
 
   return (
     <>

@@ -1,9 +1,11 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback} from 'react';
 import { useRouter } from 'next/router';
 import DropdownMenu from '../Dropdowns/DropdownMenu';
 import {CogIcon, UserCircleIcon} from "@heroicons/react/solid";
 import { XIcon } from "@heroicons/react/solid";
 import {DropdownOption} from "@/types/Options";
+import Link from 'next/link';
+import Image from "next/image";
 
 
 const Header = () => {
@@ -77,12 +79,12 @@ const Header = () => {
                     </div>
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                         <div className="flex flex-shrink-0 items-center">
-                            <img
+                            <Image
                                 className="block h-8 w-auto lg:hidden"
                                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                                 alt="Your Company"
                             />
-                            <img
+                            <Image
                                 className="hidden h-8 w-auto lg:block"
                                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                                 alt="Your Company"
@@ -91,7 +93,7 @@ const Header = () => {
                         <div className="hidden sm:ml-6 sm:block">
                             <div className="flex space-x-4">
                                 {/* Liens du menu */}
-                                <a
+                                <Link
                                     href="/"
                                     className={`${
                                         router.pathname === '/' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
@@ -99,8 +101,8 @@ const Header = () => {
                                     id="dashboard-link" // ID pour le lien du tableau de bord
                                 >
                                     Dashboard
-                                </a>
-                                <a
+                                </Link>
+                                <Link
                                     href="/events"
                                     className={`${
                                         router.pathname === '/events' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
@@ -108,8 +110,8 @@ const Header = () => {
                                     id="events-link" // ID pour le lien des événements
                                 >
                                     Events
-                                </a>
-                                <a
+                                </Link>
+                                <Link
                                     href="/organizations"
                                     className={`${
                                         router.pathname === '/organizations'
@@ -119,8 +121,8 @@ const Header = () => {
                                     id="organizations-link" // ID pour le lien des organisations
                                 >
                                     Organizations
-                                </a>
-                                <a
+                                </Link>
+                                <Link
                                     href="/users"
                                     className={`${
                                         router.pathname === '/users' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
@@ -128,8 +130,8 @@ const Header = () => {
                                     id="users-link" // ID pour le lien des utilisateurs
                                 >
                                     Users
-                                </a>
-                                <a
+                                </Link>
+                                <Link
                                     href="/tags"
                                     className={`${
                                         router.pathname === '/tags' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
@@ -137,7 +139,7 @@ const Header = () => {
                                     id="tags-link" // ID pour le lien des utilisateurs
                                 >
                                     Tags
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>

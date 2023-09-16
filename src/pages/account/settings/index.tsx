@@ -1,7 +1,6 @@
 import React from 'react';
 import SettingsLayout from '@/components/Layouts/SettingsLayout';
-import Form from '@/components/Forms/Form';
-import ChangeUsername from '@/components/Forms/ChangeUsername';
+    import ChangeUsername from '@/components/Forms/ChangeUsername';
 import ChangeEmail from '@/components/Forms/ChangeEmail';
 
 export default function SettingsPage() {
