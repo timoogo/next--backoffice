@@ -4,13 +4,12 @@ import { GetServerSideProps } from 'next';
 import { API_ROUTES } from '@/constants/api.routes.constants';
 import { FaCheck } from 'react-icons/fa';
 
-export type TagFormData = {
+export interface TagFormData = {
   id: string;
-  tagCategory: string;
-  tagName: string;
-  tagType: string;
-  tagColor?: string;
+  [key: string]: string;
 };
+
+
 
 const TAG_TYPES = ['offline', 'online', 'both'];
 const TAG_CATEGORIES = ['GENERAL', 'SPECIFIC'];

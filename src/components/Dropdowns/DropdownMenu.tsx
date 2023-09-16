@@ -80,7 +80,6 @@ const DropdownMenu: React.FC<DropdownProps> = ({
         position: isOpen ? 'fixed' : 'static',
         marginTop: isOpen ? 'mt-' : '0',
       }}
-
     >
       <div>
         <button
@@ -90,9 +89,9 @@ const DropdownMenu: React.FC<DropdownProps> = ({
           <Icon className="h-5 w-5" />
         </button>
       </div>
-
+  
       {isOpen && (
-        <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100">
+        <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 w-full min-w-[10rem]">
           {(title || description) && (
             <div className="px-4 py-3">
               {title && <h3 className="text-sm font-medium text-gray-900">{title}</h3>}
@@ -104,7 +103,7 @@ const DropdownMenu: React.FC<DropdownProps> = ({
               <button
                 key={index}
                 onClick={() => handleOptionClick(option)}
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center w-full truncate"
               >
                 {withIcons && (
                   <option.Icon
@@ -121,6 +120,9 @@ const DropdownMenu: React.FC<DropdownProps> = ({
       )}
     </div>
   );
+  
+  
+  
 };
 
 export default DropdownMenu;
