@@ -77,7 +77,7 @@ const DropdownMenu: React.FC<DropdownProps> = ({
       className={`relative inline-block text-left ${isOpen ? 'open' : ''}`}
       style={{ 
         zIndex: isOpen ? 999 : 'auto',
-        position: isOpen ? 'fixed' : 'static',
+        //position: isOpen ? 'fixed' : 'static',
         marginTop: isOpen ? 'mt-' : '0',
       }}
     >
