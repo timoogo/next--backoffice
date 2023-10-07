@@ -1,23 +1,7 @@
 import { API_ROUTES } from '@/constants/api.routes.constants';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
-interface Event {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  location: string;
-  type: string;
-  date: string;
-  duration: number;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface EventPageProps {
-  event: Event;
-}
+import { Event, EventPageProps } from '@/interfaces/events/Id.interface';
 
 const EventPage: React.FC<EventPageProps> = ({ event }) => {
 

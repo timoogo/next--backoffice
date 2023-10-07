@@ -6,6 +6,8 @@ import Paginator from '@/components/Paginators/Paginator';
 import { DropdownOption } from '@/types/Options';
 import { PencilAltIcon, XCircleIcon } from '@heroicons/react/solid';
 import { API_ROUTES } from '@/constants/api.routes.constants';
+import Chip from '@/components/Chip/chip';
+import { getContrastingTextColor, randomColor } from '@/utils/Colors.utils'
 
 interface Tag {
   id: number;
@@ -64,14 +66,6 @@ const TagsPage = ({ tags }: TagsPageProps) => {
       action: () => handleDelete(tagId),
     },
   ];
-
-  const getContrastingTextColor = (tagColor: string): string => {
-    const r = parseInt(tagColor.substr(1, 2), 16);
-    const g = parseInt(tagColor.substr(3, 2), 16);
-    const b = parseInt(tagColor.substr(5, 2), 16);
-    const luminosity = 0.299 * r + 0.587 * g + 0.114 * b;
-    return luminosity > 128 ? 'text-black' : 'text-white';
-  };
 
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
@@ -145,14 +139,7 @@ const TagsPage = ({ tags }: TagsPageProps) => {
                   <td className="px-6 py-4 text-center align-middle"> {tag.tagCategory} </td>
                   <td className="px-6 py-4 text-center align-middle">
                     {tag.tagColor && (
-                      <span
-                        className={`inline-flex px-2 text-xs font-semibold leading-5 rounded-full ${getContrastingTextColor(
-                          tag.tagColor
-                        )}`}
-                        style={{ backgroundColor: tag.tagColor }}
-                      >
-                        {tag.tagColor}
-                      </span>
+                      <Chip backgroungColor={randomColor.toString()} textColor={randomColor.toString()} textContent="Entity" />
                     )}
                   </td>
                   <td className="px-6 py-4 align-middle text-center">

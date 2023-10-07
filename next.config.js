@@ -1,4 +1,7 @@
 module.exports = {
+    images: {
+      domains: ['tailwindui.com'],
+    },
     async headers() {
       return [
         {

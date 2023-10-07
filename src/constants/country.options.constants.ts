@@ -1,8 +1,7 @@
-export interface CountryOption {
-    label: string;
-    value: string;
-    format: string; // Nouvelle propriété pour le format de numéro
-
+    export interface CountryOption {
+      label: string;
+      value: string;
+      format: string; // Nouvelle propriété pour le format de numéro
     }
 
 

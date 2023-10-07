@@ -1,9 +1,5 @@
-import React, { ReactNode } from 'react';
-
-interface SettingsLayoutProps {
-    children: ReactNode;
-    titles: ReactNode;
-}
+import React from 'react';
+import { SettingsLayoutProps } from '@/interfaces/SettingsLayout.interface';
 
 const SettingsLayout = ({ children, titles }: SettingsLayoutProps) => {
     return (

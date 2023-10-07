@@ -7,7 +7,6 @@ import {DropdownOption} from "@/types/Options";
 import Link from 'next/link';
 import Image from "next/image";
 
-
 const Header = () => {
     const router = useRouter();
     const handleSettingsClick = useCallback(() => {
@@ -83,11 +82,15 @@ const Header = () => {
                                 className="block h-8 w-auto lg:hidden"
                                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                                 alt="Your Company"
+                                width="32"
+                                height="32"
                             />
                             <Image
                                 className="hidden h-8 w-auto lg:block"
                                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                                 alt="Your Company"
+                                width="32"
+                                height="32"
                             />
                         </div>
                         <div className="hidden sm:ml-6 sm:block">
@@ -137,6 +140,15 @@ const Header = () => {
                                         router.pathname === '/tags' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                                     } px-3 py-2 rounded-md text-sm font-medium`}
                                     id="tags-link" // ID pour le lien des utilisateurs
+                                >
+                                    Tags
+                                </Link>
+                                <Link
+                                    href="/generic-entity"
+                                    className={`${
+                                        router.pathname === '/generic-entity' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                                    } px-3 py-2 rounded-md text-sm font-medium`}
+                                    id="generic-link" // ID pour le lien des utilisateurs
                                 >
                                     Tags
                                 </Link>

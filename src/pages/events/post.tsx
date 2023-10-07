@@ -1,18 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/router";
-
-export type EventFormData = {
-  name: string;
-  organizer: { id: number };
-  participants: Array<{ id: number }>;
-  tags: { id: number };
-  description: string;
-  image: string;
-  location: string;
-  date: string;
-  duration: number;
-  status: string;
-};
+import { EventFormData } from "@/types/events/Post.type";
 
 const EVENT_STATUS = ["En cours", "Complété", "Annulé"];
 

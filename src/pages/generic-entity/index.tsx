@@ -6,7 +6,10 @@ import Paginator from '@/components/Paginators/Paginator';
 import { DropdownOption } from '@/types/Options';
 import { PencilAltIcon, XCircleIcon } from '@heroicons/react/solid';
 import { API_ROUTES } from '@/constants/api.routes.constants';
+import Chip from '@/components/Chip/chip';
+import { getContrastingTextColor, randomColor } from '@/utils/Colors.utils';
 
+// Define a generic Entity type
 interface Entity {
   id: number;
   name: string;
@@ -15,15 +18,25 @@ interface Entity {
   color?: string;
 }
 
-interface EntityPageProps {
-  entities: Entity[];
+interface EntityPageProps<T> {
+  entities: T[];
 }
 
-const EntitiesPage = ({ entities }: EntityPageProps) => {
+const EntitiesPage = <T extends Entity>({ entities }: EntityPageProps<T>) => {
   const router = useRouter();
 
   const handleEdit = (entityId: number) => {
     router.push(`/entities/put/${entityId}`);
+  };
+
+  const findEntityName = (entityId: number, entities: T[]) => {
+    const entity = entities.find((e) => e.id === entityId);
+
+    if (entity) {
+      return entity.name;
+    } else {
+      return "Entity not found";
+    }
   };
 
   const [currententities, setCurrententities] = useState(entities);
@@ -35,14 +48,14 @@ const EntitiesPage = ({ entities }: EntityPageProps) => {
       });
 
       if (response.ok) {
-        console.log(`Tag with ID ${entityId} deleted successfully.`);
+        console.log(`${findEntityName(entityId, entities)} with ID ${entityId} deleted successfully.`);
         setCurrententities(currententities.filter(tag => tag.id !== entityId));
       } else {
-        console.error(`Error deleting tag with ID ${entityId}.`);
+        console.error(`Error deleting ${findEntityName(entityId, entities)} with ID ${entityId}.`);
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
-          console.error(`Error deleting tag with ID ${entityId}: ${error.message}`);
+          console.error(`Error deleting ${findEntityName(entityId, entities)} with ID ${entityId}: ${error.message}`);
       } else {
           console.error(`An unexpected error occurred.`);
       }
@@ -64,14 +77,6 @@ const EntitiesPage = ({ entities }: EntityPageProps) => {
       action: () => handleDelete(entityId),
     },
   ];
-
-  const getContrastingTextColor = (tagColor: string): string => {
-    const r = parseInt(tagColor.substr(1, 2), 16);
-    const g = parseInt(tagColor.substr(3, 2), 16);
-    const b = parseInt(tagColor.substr(5, 2), 16);
-    const luminosity = 0.299 * r + 0.587 * g + 0.114 * b;
-    return luminosity > 128 ? 'text-black' : 'text-white';
-  };
 
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
@@ -95,10 +100,10 @@ const EntitiesPage = ({ entities }: EntityPageProps) => {
 
   const renderTableHeaders = () => {
     if (displayedentities.length > 0) {
-      const tagKeys = ['id', 'tagName', 'tagCategory', 'tagType', 'tagColor'];
+      const entityKeys = ['id', 'tagName', 'tagCategory', 'tagType', 'tagColor'];
       return (
         <tr className="border-b border-gray-200 text-center">
-          {tagKeys.map((key) => (
+          {entityKeys.map((key) => (
             <th
               className="px-6 py-4 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle"
               key={key}
@@ -114,7 +119,6 @@ const EntitiesPage = ({ entities }: EntityPageProps) => {
     }
     return null;
   };
-  
 
   return (
     <div>
@@ -123,10 +127,10 @@ const EntitiesPage = ({ entities }: EntityPageProps) => {
           href="/entities/post"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
-          Créer un tag
+          Créer un {findEntityName(1, entities)}
         </Link>
       </div>
-      {currententities.length === 0 ? (
+      {entities.length === 0 ? (
         <div className='flex justify-center mt-5'>
           <p className="text-gray-500 text-lg">No entities found.</p>
         </div>
@@ -145,14 +149,7 @@ const EntitiesPage = ({ entities }: EntityPageProps) => {
                   <td className="px-6 py-4 text-center align-middle"> {entity.category} </td>
                   <td className="px-6 py-4 text-center align-middle">
                     {entity.color && (
-                      <span
-                        className={`inline-flex px-2 text-xs font-semibold leading-5 rounded-full ${getContrastingTextColor(
-                          entity.color
-                        )}`}
-                        style={{ backgroundColor: entity.color }}
-                      >
-                        {entity.color}
-                      </span>
+                      <Chip backgroungColor={randomColor.toString()} textContent={getContrastingTextColor(entity.name)} />
                     )}
                   </td>
                   <td className="px-6 py-4 align-middle text-center">
@@ -163,14 +160,14 @@ const EntitiesPage = ({ entities }: EntityPageProps) => {
             </tbody>
           </table>
           <div className="flex justify-center mt-4">
-            {currententities.length > itemsPerPage && (
+            {entities.length > itemsPerPage && (
               <Paginator
                 currentPage={currentPage}
                 totalPages={totalPages}
                 itemsPerPage={itemsPerPage}
                 onPageChange={handlePageChange}
                 onItemsPerPageChange={handleItemsPerPageChange}
-                items={currententities}
+                items={entities}
               />
             )}
           </div>
@@ -185,7 +182,7 @@ export default EntitiesPage;
 export const getServerSideProps = async () => {
   // Fetch the entities data from your API or source
   const res = await fetch(`${API_ROUTES.ENTITY_NAME}`);
-  const entities = await res.json();
+  const entities: Entity[] = await res.json();
 
   return {
     props: {

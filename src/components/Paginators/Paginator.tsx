@@ -1,13 +1,5 @@
 import React from 'react';
-
-interface PaginatorProps<T> {
-  currentPage: number;
-  totalPages: number;
-  itemsPerPage: number;
-  onPageChange: (pageNumber: number) => void;
-  onItemsPerPageChange: (itemsPerPage: number) => void;
-  items: T[];
-}
+import { PaginatorProps } from '@/interfaces/Paginator.interface';
 
 const Paginator: React.FC<PaginatorProps<unknown>> = ({
   currentPage,

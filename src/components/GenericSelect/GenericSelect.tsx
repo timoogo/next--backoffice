@@ -1,14 +1,5 @@
 import React from 'react';
-
-interface Option {
-  value: string | number;
-  label: string;
-}
-
-interface Props<T> {
-  name: string;
-  options: T[];
-}
+import { Option, Props } from '@/interfaces/GenericSelect.interface';
 
 export const GenericSelect = <T extends Option>({ name, options }: Props<T>) => {
     return (

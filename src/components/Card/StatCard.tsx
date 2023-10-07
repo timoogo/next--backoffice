@@ -1,14 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-
-interface StatCardProps {
-  title: string;
-  value: string;
-  description: string;
-  icon: React.ReactNode;
-  redirection?: string;
-  accessibilityLabel: string;
-}
+import { StatCardProps } from '@/interfaces/StatCard.interface';
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, description, icon, redirection, accessibilityLabel }) => {
   return (

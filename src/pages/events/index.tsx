@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PencilAltIcon } from '@heroicons/react/solid';
 import Paginator from '@/components/Paginators/Paginator';
 import Link from 'next/link';
-
+import { EventsPageProps, Event } from '@/interfaces/events/Index.interface';
 
 export const getServerSideProps = async () => {
   const res = await fetch('http://localhost:3001/api/events');
@@ -17,24 +17,6 @@ export const getServerSideProps = async () => {
     },
   };
 };
-
-interface EventsPageProps {
-  events: Event[];
-}
-
-interface Event {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  location: string;
-  type: string;
-  date: string;
-  duration: number;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-}
 
 const EventsPage = ({ events }: EventsPageProps) => {
   const [itemsPerPage, setItemsPerPage] = useState(5);

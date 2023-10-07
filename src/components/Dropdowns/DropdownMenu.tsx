@@ -1,16 +1,8 @@
 import { DotsVerticalIcon, DotsHorizontalIcon } from '@heroicons/react/solid';
-import { DropdownOption } from '@/types/Options';
 import { useState } from 'react';
 import Link from 'next/link';
-
-
-interface DropdownProps {
-  description?: string;
-  options: DropdownOption[];
-  orientation?: 'vertical' | 'horizontal';
-  title?: string;
-  withIcons?: boolean;
-}
+import { DropdownOption } from '@/types/Options';
+import { DropdownProps } from '@/interfaces/DropdownMenu.interface';
 
 let openDropdownIds: string[] = [];
 
