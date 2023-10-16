@@ -4,7 +4,6 @@
       format: string; // Nouvelle propriété pour le format de numéro
     }
 
-
     export const countries: CountryOption[] = [
         { label: 'France (+33)', value: '+33', format: '+33 X XX XX XX XX' },
         { label: 'Belgique (+32)', value: '+32', format: '+32 X XX XX XX XX' },

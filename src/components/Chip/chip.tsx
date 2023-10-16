@@ -1,10 +1,5 @@
 import { getContrastingTextColor } from '@/utils/Colors.utils'
-
-export interface ChipProps {
-    backgroungColor: string,
-    textColor?: string,
-    textContent: string
-}
+import { ChipProps } from '@/interfaces/ChipProps.interface'
 
 const Chip: React.FC<ChipProps> = ({ backgroungColor, textColor = 'black', textContent }) => {
     return (

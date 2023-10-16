@@ -13,7 +13,7 @@ export interface Example extends Entity {
 }
 
 export interface PhoneNumber {
-    countryCode: string;  // Par exemple: "+33" pour la France
-    format: string;       // Par exemple: "xx xx xx xx xx" pour la France
-    number: string;       // Reste du numéro sans le code du pays
+    countryCode: string;
+    format: string;
+    number: string;
 }

@@ -1,17 +1,17 @@
 import { API_ROUTES } from "@/constants/api.routes.constants";
 import { NextResponse } from "next/server";
-import { Tag } from "../../../../types";
+import { Entity } from "@/interfaces/Entity.interface";
 
-const DATA_SOURCE_URL = API_ROUTES.TAGS
+const DATA_SOURCE_URL = API_ROUTES.ENTITY_NAME
 
 export async function GET() {
     const response = await fetch(DATA_SOURCE_URL)
-    const tags: Tag[] = await response.json()
-    return NextResponse.json(tags, { status: 200 })
+    const entities: Entity[] = await response.json()
+    return NextResponse.json(entities, { status: 200 })
 }
 
 export async function DELETE(request: Request) {
-   const { id }: Partial<Tag> = await request.json()
+   const { id }: Partial<Entity> = await request.json()
    
    if (!id) {
        return NextResponse.json({ message: 'Missing id' }, { status: 400 })
@@ -24,11 +24,11 @@ export async function DELETE(request: Request) {
  }
     }
 )
-    return NextResponse.json({ message: `Tag ${id} deleted` }, { status: 200 })
+    return NextResponse.json({ message: `Entity ${id} deleted` }, { status: 200 })
 }
 
 export async function POST(request: Request) {
-    const { id }: Partial<Tag> = await request.json()
+    const { id }: Partial<Entity> = await request.json()
     
     if (!id) {
         return NextResponse.json({ message: 'Missing id' }, { status: 400 })
@@ -41,11 +41,11 @@ export async function POST(request: Request) {
     }
     }
     )
-    return NextResponse.json({ message: `Tag ${id} created` }, { status: 200 })
+    return NextResponse.json({ message: `Entity ${id} created` }, { status: 200 })
 }
 
 export async function PUT(request: Request) {
-    const { id }: Partial<Tag> = await request.json()
+    const { id }: Partial<Entity> = await request.json()
     
     if (!id) {
         return NextResponse.json({ message: 'Missing id' }, { status: 400 })
@@ -58,5 +58,5 @@ export async function PUT(request: Request) {
     }
     }
     )
-    return NextResponse.json({ message: `Tag ${id} updated` }, { status: 200 })
+    return NextResponse.json({ message: `Entity ${id} updated` }, { status: 200 })
 }

@@ -1,14 +1,7 @@
 import StatCard from '@/components/Card/StatCard';
 import React from 'react';
 import { FaUser, FaTags, FaCalendar, FaBuilding } from 'react-icons/fa';
-
-interface StatData {
-  totalUsers: number;
-  totalTags: number;
-  totalEvents: number;
-  totalOrganizations: number;
-  // Add other statistics as needed
-}
+import { StatData } from '@/interfaces/StatData.interface';
 
 const IndexPage = ({ statData }: { statData: StatData }) => {
   return (
@@ -17,38 +10,13 @@ const IndexPage = ({ statData }: { statData: StatData }) => {
     <h1 className="text-6xl py-2 ">Dashboard</h1>
     <div className="flex flex-row flex-wrap">
       <StatCard
-        title="Total Users"
-        value={`${statData.totalUsers}`}
-        description="Total Users"
-        icon={<FaUser />}
-        redirection='/users'
-        accessibilityLabel='Total Users'
-      />
-      <StatCard
-        title="Total Tags"
-        value={`${statData.totalTags}`}
-        description="Total Tags"
+        title="Total Entity"
+        value={`${statData.totalEntities}`}
+        description="Total Entity"
         icon={<FaTags />}
-        redirection='/tags'
-        accessibilityLabel='Total Tags'
+        redirection='/generic-entity'
+        accessibilityLabel='Total Entities'
       />
-      <StatCard
-        title="Total Events"
-        value={`${statData.totalEvents}`}
-        description="Total Events"
-        icon={<FaCalendar />}
-        redirection='/events'
-        accessibilityLabel='Total Events'
-      />
-      <StatCard
-        title="Total Organizations"
-        value={`${statData.totalOrganizations}`}
-        description="Total Organizations"
-        icon={<FaBuilding />}
-        redirection='/organizations'
-        accessibilityLabel='Total Organizations'
-      />
-      {/* Ajoutez plus de composants StatCard pour d'autres statistiques */}
     </div>
   </div>
 </div>
@@ -57,31 +25,18 @@ const IndexPage = ({ statData }: { statData: StatData }) => {
 };
 
 export async function getStaticProps() {
-  const apiUrlUsers = 'http://localhost:3001/api/users';
-  const apiUrlTags = 'http://localhost:3001/api/tags';
-  const apiUrlEvents = 'http://localhost:3001/api/events';
-  const apiUrlOrganizations = 'http://localhost:3001/api/organizations';
+  const apiUrlEntities = 'http://localhost:3001/api/tags';
 
   try {
-    const [responseUsers, responseTags, responseEvents, responseOrganizations] =
+    const [responseEntities] =
       await Promise.all([
-        fetch(apiUrlUsers),
-        fetch(apiUrlTags),
-        fetch(apiUrlEvents),
-        fetch(apiUrlOrganizations),
+        fetch(apiUrlEntities),
       ]);
 
-    const users = await responseUsers.json();
-    const tags = await responseTags.json();
-    const events = await responseEvents.json();
-    const organizations = await responseOrganizations.json();
+    const entities = await responseEntities.json();
 
     const data: StatData = {
-      totalUsers: users.length,
-      totalTags: tags.length,
-      totalEvents: events.length,
-      totalOrganizations: organizations.length,
-      // Add other statistics as needed
+      totalEntities: entities.length,
     };
 
     return {
@@ -95,11 +50,7 @@ export async function getStaticProps() {
     return {
       props: {
         statData: {
-          totalUsers: 0,
-          totalTags: 0,
-          totalEvents: 0,
-          totalOrganizations: 0,
-          // Add other statistics as needed with default values
+          totalEntities: 0,
         },
       },
     };

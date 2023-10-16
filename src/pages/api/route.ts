@@ -1,5 +1,5 @@
 import { API_ROUTES } from "@/constants/api.routes.constants";
-import { Entity } from "@/types/Entity.type";
+import { Entity } from "@/interfaces/Entity.interface";
 import { NextResponse } from "next/server";
 
 const DATA_SOURCE_URL = API_ROUTES.ENTITY_NAME

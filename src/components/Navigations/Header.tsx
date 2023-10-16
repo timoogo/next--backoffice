@@ -106,51 +106,13 @@ const Header = () => {
                                     Dashboard
                                 </Link>
                                 <Link
-                                    href="/events"
-                                    className={`${
-                                        router.pathname === '/events' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                                    } px-3 py-2 rounded-md text-sm font-medium`}
-                                    id="events-link" // ID pour le lien des événements
-                                >
-                                    Events
-                                </Link>
-                                <Link
-                                    href="/organizations"
-                                    className={`${
-                                        router.pathname === '/organizations'
-                                            ? 'bg-gray-900 text-white'
-                                            : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                                    } px-3 py-2 rounded-md text-sm font-medium`}
-                                    id="organizations-link" // ID pour le lien des organisations
-                                >
-                                    Organizations
-                                </Link>
-                                <Link
-                                    href="/users"
-                                    className={`${
-                                        router.pathname === '/users' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                                    } px-3 py-2 rounded-md text-sm font-medium`}
-                                    id="users-link" // ID pour le lien des utilisateurs
-                                >
-                                    Users
-                                </Link>
-                                <Link
-                                    href="/tags"
-                                    className={`${
-                                        router.pathname === '/tags' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                                    } px-3 py-2 rounded-md text-sm font-medium`}
-                                    id="tags-link" // ID pour le lien des utilisateurs
-                                >
-                                    Tags
-                                </Link>
-                                <Link
                                     href="/generic-entity"
                                     className={`${
                                         router.pathname === '/generic-entity' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                                     } px-3 py-2 rounded-md text-sm font-medium`}
                                     id="generic-link" // ID pour le lien des utilisateurs
                                 >
-                                    Tags
+                                    Entity Name
                                 </Link>
                             </div>
                         </div>

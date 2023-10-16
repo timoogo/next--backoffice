@@ -98,9 +98,25 @@ const EntitiesPage = <T extends Entity>({ entities }: EntityPageProps<T>) => {
   const indexOfFirstTag = indexOfLastTag - itemsPerPage;
   const displayedentities = currententities.slice(indexOfFirstTag, indexOfLastTag);
 
+  const generateKeys = (numberOfKeys: number): string[] => {
+    const keys: string[] = [];
+    const names: (string | undefined)[] = ["id", "columnName", "columnCategory", "columnType", "columnColor"];
+    
+    for (let i = 0; i < numberOfKeys; i++) {
+      const randomIndex = Math.floor(Math.random() * names.length);
+      const randomValue = names[randomIndex];
+      
+      if (randomValue !== undefined) {
+        keys.push(randomValue);
+      }
+    }
+  
+    return keys;
+  };
+  
   const renderTableHeaders = () => {
     if (displayedentities.length > 0) {
-      const entityKeys = ['id', 'tagName', 'tagCategory', 'tagType', 'tagColor'];
+      const entityKeys = generateKeys(5);
       return (
         <tr className="border-b border-gray-200 text-center">
           {entityKeys.map((key) => (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormProp } from "@/types/FormProps";
+import { FormProp } from "@/interfaces/FormProps.interface";
 
 const Form: React.FC<FormProp> = ({ title, description, value, isEncrypted, onChange, onSubmit }) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

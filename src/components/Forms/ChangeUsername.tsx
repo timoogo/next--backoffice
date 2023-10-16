@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Form from './Form';
-import {FormProp} from "@/types/FormProps";
+import {FormProp} from "@/interfaces/FormProps.interface";
 
 
 const ChangeUsername: React.FC<FormProp> = ({ title, description }) => {
