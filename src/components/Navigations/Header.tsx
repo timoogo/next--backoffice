@@ -6,9 +6,12 @@ import { XIcon } from "@heroicons/react/solid";
 import {DropdownOption} from "@/types/Options";
 import Link from 'next/link';
 import Image from "next/image";
+import useLeftNavVisibility from '@/hooks/useLeftNavVisibility';
 
 const Header = () => {
     const router = useRouter();
+    const { openLeftNav } = useLeftNavVisibility();
+
     const handleSettingsClick = useCallback(() => {
         router.push('/account/settings');
     }, [router]);
@@ -18,7 +21,6 @@ const Header = () => {
             // @ts-ignore
         {
             text: 'Profile',
-            // @ts-ignore
             Icon: UserCircleIcon,
             color: "#3B82F6",
             action: () => console.log('Profile'),
@@ -38,7 +40,6 @@ const Header = () => {
             action: () => console.log('Sign out'),
         },
     ];
-
 
     // @ts-ignore
     return (
@@ -76,28 +77,21 @@ const Header = () => {
                             </svg>
                         </button>
                     </div>
-                    <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                    <div className="flex flex-1 items-center justify-center sm:justify-start">
                         <div className="flex flex-shrink-0 items-center">
-                            <Image
-                                className="block h-8 w-auto lg:hidden"
-                                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                                alt="Your Company"
-                                width="32"
-                                height="32"
-                            />
-                            <Image
-                                className="hidden h-8 w-auto lg:block"
-                                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                                alt="Your Company"
-                                width="32"
-                                height="32"
-                            />
+                            <img src="/assets/images/logos/wizard.svg" alt="Your Company" height="40" width="40" />
                         </div>
-                        <div className="hidden sm:ml-6 sm:block">
+                        {/* Button left navbar */}
+                        <div className="cursor-pointer w-10 h-fit sm:ml-4" onClick={openLeftNav}>
+                            <div className="w-full h-1 rounded-5 bg-white"></div>
+                            <div className="w-full h-1 rounded-5 bg-white my-2"></div>
+                            <div className="w-full h-1 rounded-5 bg-white"></div>
+                        </div>
+                        <div className="hidden sm:ml-4 sm:block">
                             <div className="flex space-x-4">
                                 {/* Liens du menu */}
                                 <Link
-                                    href="/"
+                                    href={{ pathname: '/', query: { type: 'dashboard' } }}
                                     className={`${
                                         router.pathname === '/' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                                     } px-3 py-2 rounded-md text-sm font-medium`}
@@ -116,14 +110,6 @@ const Header = () => {
                                 </Link>
                             </div>
                         </div>
-                    </div>
-                    <div className="flex items-center justify-end">
-                        <DropdownMenu
-                            orientation={"horizontal"}
-                            withIcons={true}
-                            options={optionList}
-                        />
-
                     </div>
                 </div>
             </div>

@@ -8,74 +8,39 @@ import { PencilAltIcon, XCircleIcon } from '@heroicons/react/solid';
 import { API_ROUTES } from '@/constants/api.routes.constants';
 import Chip from '@/components/Chip/chip';
 import { getContrastingTextColor, randomColor } from '@/utils/Colors.utils';
-
-// Define a generic Entity type
-interface Entity {
-  id: number;
-  name: string;
-  category: string;
-  type: string;
-  color?: string;
-}
-
-interface EntityPageProps<T> {
-  entities: T[];
-}
+import { Entity, EntityPageProps } from '@/interfaces/generic-entity/Entity.interface'
 
 const EntitiesPage = <T extends Entity>({ entities }: EntityPageProps<T>) => {
-  const router = useRouter();
 
-  const handleEdit = (entityId: number) => {
-    router.push(`/entities/put/${entityId}`);
-  };
+  const router = useRouter();
+  const handleEdit = (entityId: number) => { router.push(`/generic-entity/put/${entityId}`); };
 
   const findEntityName = (entityId: number, entities: T[]) => {
     const entity = entities.find((e) => e.id === entityId);
-
-    if (entity) {
-      return entity.name;
-    } else {
-      return "Entity not found";
-    }
+    if (entity) { return entity.name; }
+    else { return "Entity not found"; }
   };
 
   const [currententities, setCurrententities] = useState(entities);
 
   const handleDelete = async (entityId: number) => {
-    try {
-      const response = await fetch(`${API_ROUTES.ENTITY_NAME}/${entityId}`, {
-        method: 'DELETE',
-      });
+    try { const response = await fetch(`${API_ROUTES.ENTITY_NAME}/${entityId}`, { method: 'DELETE', });
 
       if (response.ok) {
         console.log(`${findEntityName(entityId, entities)} with ID ${entityId} deleted successfully.`);
         setCurrententities(currententities.filter(tag => tag.id !== entityId));
-      } else {
-        console.error(`Error deleting ${findEntityName(entityId, entities)} with ID ${entityId}.`);
       }
+      else { console.error(`Error deleting ${findEntityName(entityId, entities)} with ID ${entityId}.`); }
     } catch (error: unknown) {
-      if (error instanceof Error) {
-          console.error(`Error deleting ${findEntityName(entityId, entities)} with ID ${entityId}: ${error.message}`);
-      } else {
-          console.error(`An unexpected error occurred.`);
-      }
+      if (error instanceof Error) { console.error(`Error deleting ${findEntityName(entityId, entities)} with ID ${entityId}: ${error.message}`); }
+      else { console.error(`An unexpected error occurred.`); }
     }
   };
 
   const options = (entityId: number): DropdownOption[] => [
     // @ts-ignore
-    {
-      text: 'Modifier',
-      Icon: PencilAltIcon,
-      color: '#3490dc',
-      action: () => handleEdit(entityId),
-    },
-    {
-      text: 'Supprimer',
-      Icon: XCircleIcon,
-      color: '#e3342f',
-      action: () => handleDelete(entityId),
-    },
+    { text: 'Modifier', Icon: PencilAltIcon, color: '#3490dc', action: () => handleEdit(entityId), },
+    { text: 'Supprimer', Icon: XCircleIcon, color: '#e3342f', action: () => handleDelete(entityId), },
   ];
 
   const [itemsPerPage, setItemsPerPage] = useState(5);
@@ -83,9 +48,7 @@ const EntitiesPage = <T extends Entity>({ entities }: EntityPageProps<T>) => {
   const totalPages = Math.ceil(currententities.length / itemsPerPage);
 
   const handlePageChange = (pageNumber: number) => {
-    if (pageNumber < 1 || pageNumber > totalPages) {
-      return;
-    }
+    if (pageNumber < 1 || pageNumber > totalPages) { return; }
     setCurrentPage(pageNumber);
   };
 
@@ -106,9 +69,7 @@ const EntitiesPage = <T extends Entity>({ entities }: EntityPageProps<T>) => {
       const randomIndex = Math.floor(Math.random() * names.length);
       const randomValue = names[randomIndex];
       
-      if (randomValue !== undefined) {
-        keys.push(randomValue);
-      }
+      if (randomValue !== undefined) { keys.push(randomValue); }
     }
   
     return keys;
@@ -120,10 +81,7 @@ const EntitiesPage = <T extends Entity>({ entities }: EntityPageProps<T>) => {
       return (
         <tr className="border-b border-gray-200 text-center">
           {entityKeys.map((key) => (
-            <th
-              className="px-6 py-4 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle"
-              key={key}
-            >
+            <th key={key} className="px-6 py-4 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" >
               {key}
             </th>
           ))}
@@ -140,7 +98,7 @@ const EntitiesPage = <T extends Entity>({ entities }: EntityPageProps<T>) => {
     <div>
       <div className="flex justify-end">
         <Link
-          href="/entities/post"
+          href="/generic-entity/post"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           Créer un {findEntityName(1, entities)}
@@ -151,7 +109,7 @@ const EntitiesPage = <T extends Entity>({ entities }: EntityPageProps<T>) => {
           <p className="text-gray-500 text-lg">No entities found.</p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
+        <div className="rounded-lg border border-gray-200 shadow-md mt-5">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               {renderTableHeaders()}

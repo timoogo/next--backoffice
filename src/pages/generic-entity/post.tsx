@@ -1,183 +1,92 @@
-/* import { ChangeEvent, FormEvent, useState } from 'react';
+// import libraries
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useRouter } from 'next/router';
+// import utils
+import { randomColor } from '@/utils/Colors.utils';
+// import types
+import { EntityFormData } from '@/types/EntityFormData';
+// import hooks
+import usePostOneEntityData from '@/hooks/usePostEntityData';
 
-export type TagFormData = {
-  id: string;
-  tagCategory: string;
-  tagName: string;
-  tagType: string;
-  tagColor?: string;
+const entityName: Partial<EntityFormData> = {
+  entityName: "generic-entity"
 };
 
 // Options pour les sélecteurs
-const TAG_TYPES = ['offline', 'online', 'both'];
-const TAG_CATEGORIES = ['GENERAL', 'SPECIFIC'];
+const ENTITY_TYPES = ['type 1', 'type 2', 'type 3', 'unset'];
+const ENTITY_CATEGORIES = ['Categorie 1', 'Categorie 2'];
 
-const PostTag: React.FC = () => {
+const PostEntity: React.FC = () => {
   const router = useRouter();
-  const [formData, setFormData] = useState<
-    Omit<TagFormData, 'id'> & { tagCategory: string; tagType: string }
-  >({
-    tagCategory: TAG_CATEGORIES[0] as string,
-    tagName: '',
-    tagType: TAG_TYPES[0] as string,
-    tagColor: '',
+  const [formData, setFormData] = useState<Omit<EntityFormData, 'id'> & { entityCategory: string; entityType: string, entityName: string ,entityColor: string }>({
+    entityCategory: ENTITY_CATEGORIES[0] as string,
+    entityName: 'entity',
+    entityType: ENTITY_TYPES[0] as string,
+    entityColor: '',
   });
   const [isFormComplete, setIsFormComplete] = useState(false);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    // Vérifiez si toutes les données requises sont remplies.
-    // Dans cet exemple, je suppose que tagType et tagCategory sont les seules données requises.
-    // Si ce n'est pas le cas, ajustez cette logique en conséquence.
-    if (formData.tagType && formData.tagCategory && formData.tagName) {
-      setIsFormComplete(true);
-    } else {
-      setIsFormComplete(false);
-    }
+    setFormData((prev) => ({ ...prev, [name]: value,}));
+    if (formData.entityType && formData.entityCategory && formData.entityName) { setIsFormComplete(true); }
+    else { setIsFormComplete(false); }
   };
 
-  const randomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
+  const { mutate } = usePostOneEntityData();
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const finalData = {
-      ...formData,
-      tagColor: formData.tagColor || randomColor(),
-    };
+    const finalData = { ...formData, entityColor: formData.entityColor || randomColor() };
 
-    try {
-      const response = await fetch('http://localhost:3001/api/tags', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(finalData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Erreur lors de la création du tag');
-      }
-
-      // Redirection vers la page d'accueil (index)
-      router.push('/');
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      } else {
-        console.error("Une erreur inattendue s'est produite.");
-      }
-    }
+    mutate({ formData, finalData, entityName });
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-<h1 className='ml-16 text-3xl font-bold mb-4'>Create a Tag</h1>
-      <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-        <div className="px-4 py-10 bg-white shadow-lg sm:rounded-lg sm:p-20">
-          <form onSubmit={handleSubmit} className="space-y-4">
+    <div>
+      <div className='flex justify-center items-center w-full mt-6 mb-8'>
+        <h1 className='text-3xl font-bold text-gray-900'>Create an {formData.entityName}</h1>
+      </div>
+      <div className='flex justify-center items-center w-full'>
+        <div className='w-96 py-16 px-32 bg-gray-100 shadow-lg sm:rounded-lg'>
+          <form className='flex justify-center items-center flex-col w-full' onSubmit={handleSubmit}>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Nom:
-              </label>
-              <input
-                type="text"
-                name="tagName"
-                value={formData.tagName}
-                onChange={handleChange}
-                required
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-              />
+              <label className="block text-sm font-medium text-gray-900">Name:</label>
+              <input type="text" name="entityName" placeholder={formData.entityName} onChange={handleChange} required className={`min-w-[16rem] px-1 py-1 mb-4 rounded-md border-2 bg-white border-red-300 shadow-md shadow-red-100`} />
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Couleur:
-              </label>
-              <input
-                type="text"
-                name="tagColor"
-                value={formData.tagColor}
-                onChange={handleChange}
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-              />
+              <label className="block text-sm font-medium text-gray-900">Color:</label>
+              <input type="text" name="entityColor" placeholder={formData.entityColor} onChange={handleChange} required className={`min-w-[16rem] px-1 py-1 mb-4 rounded-md border-2 bg-white border-red-300 shadow-md shadow-red-100`} />
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Catégorie:
-              </label>
-              <select
-                name="tagCategory"
-                value={formData.tagCategory}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              >
-                <option value="" disabled selected>
-                  Select a category
-                </option>
-                {TAG_CATEGORIES.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
+              <label className="block text-sm font-medium text-gray-900">Catégorie:</label>
+              <select name="entityCategory" value={formData.entityCategory} onChange={handleChange} required className={`min-w-[16rem] px-1 py-2 mb-4  rounded-md border-2 bg-white border-red-300 shadow-md shadow-red-100`}>
+                <option value="default" disabled>- Select a category -</option>
+                {ENTITY_CATEGORIES.map((category) => (
+                  <option key={category} value={category}>{category}</option>
                 ))}
               </select>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Type:
-              </label>
-              <select
-                name="tagType"
-                value={formData.tagType}
-                onChange={handleChange}
-                required
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              >
-                <option value="" disabled selected>
-                  Select a type
-                </option>
-                {TAG_TYPES.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
+              <label className="block text-sm font-medium text-gray-900">Type:</label>
+              <select name="entityType" value={formData.entityType} onChange={handleChange} required className={`min-w-[16rem] px-1 py-2 mb-12  rounded-md border-2 bg-white border-red-300 shadow-md shadow-red-100`}>
+                <option value="default" disabled>- Select a type -</option>
+                {ENTITY_TYPES.map((type) => (
+                  <option key={type} value={type}>{type}</option>
                 ))}
               </select>
             </div>
 
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                disabled={!isFormComplete}
-                className={`px-6 py-2 rounded-md text-white transition duration-200 ease-in-out ${
-                  isFormComplete
-                    ? 'bg-blue-600 hover:bg-blue-700'
-                    : 'bg-gray-400 cursor-not-allowed'
-                }`}
-              >
-                Submit
-              </button>
+            <div className="block">
+              <button type="submit" disabled={!isFormComplete} className={`px-6 py-2 rounded-md text-white transition duration-200 ease-in-out ${ isFormComplete ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed' }`}>Submit</button>
             </div>
           </form>
         </div>
-      </div>
+      </div> 
     </div>
   );
 };
 
-export default PostTag;
- */
+export default PostEntity;
